@@ -84,12 +84,12 @@ app.put('/api/student/:id', (request, response)=>{
     const student = students[studentIndex];
     const updatedStudent = {...student, ...request.body};
 
-    student.name = updatedStudent.name;
-    student.currentClass = updatedStudent.currentClass;
-    student.division = updatedStudent.division;
+    students[studentIndex].name = updatedStudent.name;
+    students[studentIndex].currentClass = updatedStudent.currentClass;
+   students[studentIndex].division = updatedStudent.division;
     
     
-    response.send(updatedStudent);
+    response.send(students[studentIndex]);
 });
 
 
