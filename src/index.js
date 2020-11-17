@@ -82,14 +82,17 @@ app.put('/api/student/:id', (request, response)=>{
     }
     
     const student = students[studentIndex];
-    const updatedStudent = {...student, ...request.body};
-
-    students[studentIndex].name = updatedStudent.name;
-    students[studentIndex].currentClass = updatedStudent.currentClass;
-   students[studentIndex].division = updatedStudent.division;
+    if(student.name!==request.body.name){
+        students[studentIndex].name=request.body.name;
+    }
+    if(student.currentClass!==request.body.currentClass){
+        students[studentIndex].currentClass=request.body.currentClass;
+    }
+    if(student.division!==request.body.division){
+        students[studentIndex].division=request.body.division;
+    }
     
-    
-    response.send( {name: updatedStudent.name});
+    response.send( {name: request.body.name});
 });
 
 
