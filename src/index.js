@@ -1,6 +1,10 @@
 const express = require('express')
+
+const students = require('./InitialData')
+
 const app = express()
 const bodyParser = require("body-parser");
+const { json } = require('express');
 const port = 8080
 app.use(express.urlencoded());
 
@@ -10,7 +14,115 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // your code goes here
 
+app.get('/api/student', (request, response)=>{   //whole data
+    response.send(students);
+});
+
+let idProp = students.length;
+
+app.get('/api/student/:id', (request, response)=>{   //get by id
+    const id = parseInt(request.params.id);
+    console.log(id);
+    if(isNaN(id)){
+        response.sendStatus(404);
+        console.log('pp');
+        return;
+    }
+
+    const student = students.find(stud=>stud.id === id);
+    if(!student){
+        response.sendStatus(404);
+        return;
+    }     
+    response.send(student);
+});
+
+
+
+
+app.post('/api/student',(request, response)=>{
+    const newStudent = request.body;
+    if(!newStudent.name || !newStudent.currentClass || !newStudent.division){
+        response.sendStatus(400);
+        return;
+    }
+
+    students.push({
+        id: idProp+1,
+        name: newStudent.name,
+        currentClass: parseInt(newStudent.currentClass),
+        division: newStudent.division
+    });
+
+    idProp++;
+
+    
+    response.send({
+        id: idProp
+    });
+    //return idProp;
+});
+
+
+
+
+app.put('/api/student/:id', (request, response)=>{
+    const id = parseInt(request.params.id);
+    if(isNaN(id)){
+        response.sendStatus(400);
+        return;
+    }
+    
+
+    const studentIndex = students.findIndex(stud => stud.id === id);
+    
+    if(studentIndex === -1){
+        response.sendStatus(400);
+        return;
+    }
+    
+    const student = students[studentIndex];
+    const updatedStudent = {...student, ...request.body};
+
+    student.name = updatedStudent.name;
+    student.currentClass = updatedStudent.currentClass;
+    student.division = updatedStudent.division;
+    
+    
+    response.send(updatedStudent);
+});
+
+
+
+
+app.delete('/api/student/:id', (request, response)=>{
+    const id = parseInt(request.params.id);
+    // console.log('1');
+    if(isNaN(id)){
+        response.sendStatus(404);
+        return;
+    }
+    // console.log('2');
+
+    const studentIndex = students.findIndex(stud => stud.id === id);
+    
+    if(studentIndex === -1){
+        response.sendStatus(404);
+        return;
+    }
+    // console.log('3');
+    
+    students.splice(studentIndex, 1);
+    response.sendStatus(200);
+});
+
+
+
+
+
+
+
 
 app.listen(port, () => console.log(`App listening on port ${port}!`))
 
-module.exports = app;   
+module.exports = app  
