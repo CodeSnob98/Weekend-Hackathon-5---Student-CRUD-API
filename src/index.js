@@ -82,16 +82,16 @@ app.put('/api/student/:id', (request, response)=>{
     }
     
     const student = students[studentIndex];
-    if(students[studentIndex].name!==request.body.name){
+    if(!request.body.name){
         students[studentIndex].name=request.body.name;
     }
-    if(students[studentIndex].currentClass!==parseInt(request.body.currentClass)){
+    if(!parseInt(request.body.currentClass)){
         students[studentIndex].currentClass=parseInt(request.body.currentClass);
     }
-    if(students[studentIndex].division!==request.body.division){
+    if(!request.body.division){
         students[studentIndex].division=request.body.division;
     }
-    
+    response.set("content-type", "application/x-www-form-urlencoded");
     response.send( {name:request.body.name});
 });
 
