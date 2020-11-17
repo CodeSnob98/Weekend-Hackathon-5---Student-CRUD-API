@@ -92,7 +92,7 @@ app.put('/api/student/:id', (request, response)=>{
         students[studentIndex].division=request.body.division;
     }
     
-    response.send( {name: request.body.name});
+    response.send( students[studentIndex]);
 });
 
 
