@@ -82,13 +82,13 @@ app.put('/api/student/:id', (request, response)=>{
     }
     
     const student = students[studentIndex];
-    if(!request.body.name){
+    if(request.body.name){
         students[studentIndex].name=request.body.name;
     }
     if(request.body.currentClass){
         students[studentIndex].currentClass=parseInt(request.body.currentClass);
     }
-    if(!request.body.division){
+    if(request.body.division){
         students[studentIndex].division=request.body.division;
     }
     response.set("content-type", "application/x-www-form-urlencoded");
