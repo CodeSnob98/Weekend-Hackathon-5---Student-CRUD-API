@@ -85,7 +85,7 @@ app.put('/api/student/:id', (request, response)=>{
     if(!request.body.name){
         students[studentIndex].name=request.body.name;
     }
-    if(!parseInt(request.body.currentClass)){
+    if(request.body.currentClass){
         students[studentIndex].currentClass=parseInt(request.body.currentClass);
     }
     if(!request.body.division){
